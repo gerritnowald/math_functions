@@ -13,6 +13,7 @@ import math_functions as mf
 
 N = 2   # polynomial order
 
+
 # test data 
 x = np.linspace(-2,2,100)
 y = np.cos(x)

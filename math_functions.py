@@ -18,27 +18,16 @@ def cos_sin(q):                       # q = np.array([x,y])
 # curve fitting
 
 def polyfit(x,y,N):
-    # polynomial fitting 
+    # polynomial fitting using least squares 
     # x: x-data vector
     # y: y-data vector, corresponding to x
     # N: order of fitting polynomial 
-    
-    # coefficient matrix (Vandermonde matrix)
     A = np.ones((len(x),N+1))
     for i in reversed(range(0, N)):
-        A[:,i] = x*A[:,i+1]
-    
-    # pseudo-inverse
+        A[:,i] = x*A[:,i+1]                 # coefficient matrix (Vandermonde matrix)
     B = np.transpose(A)
-    p = np.linalg.inv( B @ A ) @ ( B @ y )
-        
-    # fitted values
-    yf = np.zeros(np.shape(x))
-    for i in range(N+1):
-        yf += p[N-i]*x**i
-    
-    # p:  polynomial coeffcients in decreasing order
-    # yf: fitted values computed at x
+    p = np.linalg.inv( B @ A ) @ ( B @ y )  # polynomial coeffcients in decreasing order
+    yf = A @ p                              # fitted values computed at x
     return p, yf
 
 # -----------------------------------------------------------------------------
