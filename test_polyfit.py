@@ -9,24 +9,36 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 import math_functions as mf
+
+# -----------------------------------------------------------------------------
+# input
+
+N_data = 30 # number of data points
     
+N = 2       # polynomial order, N<<N_data
 
-N = 2   # polynomial order
-
-
+# -----------------------------------------------------------------------------
 # test data 
-x = np.linspace(-2,2,100)
-y = np.cos(x)
-y += 0.2*(np.random.rand(np.shape(x)[0])-0.5)   # adding noise
 
+data_x = np.linspace(-2,2,N_data)
+data_y = np.cos(data_x)
+data_y += 0.2*(np.random.rand(np.shape(data_x)[0])-0.5)   # adding noise
 
+# -----------------------------------------------------------------------------
 # calculation
-p, yf = mf.polyfit(x,y,N)
 
+p = mf.polyfit(data_x, data_y, N)   # polynomial coeffcients in increasing order
 
+# -----------------------------------------------------------------------------
 # plot
+
 plt.close('all')
 
+plot_x = np.linspace(-2,2,100)
+V      = mf.Vandermonde( plot_x, len(p)-1 )
+plot_y = V @ p
+
 plt.figure()
-plt.plot(x,y,'.')   # data
-plt.plot(x,yf,'k')  # fitted polynomial
+plt.plot(data_x, data_y, '.', label='data')
+plt.plot(plot_x, plot_y, 'k', label='fitted polynomial')
+plt.show()

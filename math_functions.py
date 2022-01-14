@@ -17,18 +17,22 @@ def cos_sin(q):                       # q = np.array([x,y])
 # -----------------------------------------------------------------------------
 # curve fitting
 
+def Vandermonde(x,N):
+    # coefficient matrix for polynomial interpolation
+    V = np.ones((len(x),N+1))
+    for i in range(1, N+1):
+        V[:,i] = x*V[:,i-1]                 
+    return V
+
 def polyfit(x,y,N):
     # polynomial fitting using least squares 
-    # x: x-data vector
+    # x: x-data vector, each value unique
     # y: y-data vector, corresponding to x
     # N: order of fitting polynomial 
-    A = np.ones((len(x),N+1))
-    for i in reversed(range(0, N)):
-        A[:,i] = x*A[:,i+1]                 # coefficient matrix (Vandermonde matrix)
-    B = np.transpose(A)
-    p = np.linalg.inv( B @ A ) @ ( B @ y )  # polynomial coeffcients in decreasing order
-    yf = A @ p                              # fitted values computed at x
-    return p, yf
+    V = Vandermonde(x,N)                    # coefficient matrix
+    B = np.transpose(V)
+    p = np.linalg.inv( B @ V ) @ ( B @ y )  # polynomial coeffcients in increasing order
+    return p
 
 # -----------------------------------------------------------------------------
 # ODS
