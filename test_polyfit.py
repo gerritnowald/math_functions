@@ -15,7 +15,7 @@ import math_functions as mf
 
 N_data = 30     # number of data points
     
-N = 2           # polynomial order, N<<N_data
+N = 2           # polynomial order, N<<N_data, N<=N_data-1
 
 # -----------------------------------------------------------------------------
 # test data 
@@ -35,7 +35,7 @@ p = mf.polyfit(data_x, data_y, N)   # polynomial coeffcients in increasing order
 plt.close('all')
 
 plot_x = np.linspace(-2,2,100)
-plot_y = mf.polycalc(plot_x, p)
+plot_y = mf.polyeval(plot_x, p)
 
 plt.figure()
 plt.plot(data_x, data_y, '.', label='data')

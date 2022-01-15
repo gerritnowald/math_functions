@@ -29,14 +29,14 @@ def polyfit(x,y,N):
     # x: x-data vector, each value unique
     # y: y-data vector, corresponding to x
     # N: order of fitting polynomial 
-    V = Vandermonde(x,N)                    # coefficient matrix
+    V = Vandermonde(x,N)    # coefficient matrix
     B = np.transpose(V)
-    p = np.linalg.inv( B @ V ) @ ( B @ y )  # polynomial coeffcients in increasing order
-    return p
+    p = np.linalg.inv( B @ V ) @ ( B @ y )
+    return p    # polynomial coeffcients in increasing order
 
-def polycalc(x,p):
+def polyeval(x,p):
     # evaluate polygon with coefficients p at vector x
-    return Vandermonde( x, len(p)-1 ) @ p
+    return Vandermonde( x, len(p)-1 ) @ p   # y vector corresponding to x
 
 # -----------------------------------------------------------------------------
 # ODS
