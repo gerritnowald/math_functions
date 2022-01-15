@@ -13,9 +13,9 @@ import math_functions as mf
 # -----------------------------------------------------------------------------
 # input
 
-N_data = 30 # number of data points
+N_data = 30     # number of data points
     
-N = 2       # polynomial order, N<<N_data
+N = 2           # polynomial order, N<<N_data
 
 # -----------------------------------------------------------------------------
 # test data 
@@ -35,8 +35,7 @@ p = mf.polyfit(data_x, data_y, N)   # polynomial coeffcients in increasing order
 plt.close('all')
 
 plot_x = np.linspace(-2,2,100)
-V      = mf.Vandermonde( plot_x, len(p)-1 )
-plot_y = V @ p
+plot_y = mf.polycalc(plot_x, p)
 
 plt.figure()
 plt.plot(data_x, data_y, '.', label='data')

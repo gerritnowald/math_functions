@@ -21,7 +21,7 @@ def Vandermonde(x,N):
     # coefficient matrix for polynomial interpolation
     V = np.ones((len(x),N+1))
     for i in range(1, N+1):
-        V[:,i] = x*V[:,i-1]                 
+        V[:,i] = x**i
     return V
 
 def polyfit(x,y,N):
@@ -33,6 +33,10 @@ def polyfit(x,y,N):
     B = np.transpose(V)
     p = np.linalg.inv( B @ V ) @ ( B @ y )  # polynomial coeffcients in increasing order
     return p
+
+def polycalc(x,p):
+    # evaluate polygon with coefficients p at vector x
+    return Vandermonde( x, len(p)-1 ) @ p
 
 # -----------------------------------------------------------------------------
 # ODS
