@@ -45,9 +45,9 @@ Nx  = 5
 Nxi = 3
 
 x = np.linspace(0,800,Nx)
-y = x**2
+# y = x**2
 # y = x**3/1e3
-# y = np.column_stack(( x**2, x**3/1e3))
+y = np.column_stack(( x**2, x**3/1e3))
 
 xi = np.linspace(-50,900,Nxi)
 
@@ -56,7 +56,10 @@ xi = np.linspace(-50,900,Nxi)
 
 
 # slope of line segments
-m  = np.diff(y)/np.diff(x)
+if y.ndim ==1:
+    m  = np.diff(y)/np.diff(x)
+elif y.ndim ==2:
+    m  = np.diff(y,axis=0)/np.diff(x)[:, np.newaxis]
 
 # find interval
 A = xi > x[:, np.newaxis]
@@ -67,7 +70,10 @@ ind = np.maximum(ind, 0)
 ind = np.minimum(ind, len(x)-2)
 
 # inter- & extrapolation
-yi = m[ind]*(xi-x[ind]) + y[ind]
+if y.ndim ==1:
+    yi = m[ind]*(xi-x[ind]) + y[ind]
+elif y.ndim ==2:
+    yi = m[ind,:]*(xi[:, np.newaxis]-x[ind, np.newaxis]) + y[ind,:]
 
 
 
