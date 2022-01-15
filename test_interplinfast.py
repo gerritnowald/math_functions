@@ -10,33 +10,43 @@ import matplotlib.pyplot as plt
 
 # -----------------------------------------------------------------------------
 
-# def interp1linfast(x,y,xi,m):
-# fast 1D linear inter- and extrapolation (no input checking)
-#
-# Outputs:
-# - yi: interpolated values, matrix [p x n], corresponding to xi
-#       interpolation is performed for each column
-#
-# Inputs:
-# - x:  x-data, column vector [m x 1], monotonically increasing
-# - y:  y-data, matrix [m x n], corresponding to x
-# - xi: x-values to be interpolated, column vector [p x 1], in any order
-# - m:  slopes of line segments, can be computed in advance (optional)
-#
-# uses the approach given by Loren Shure (The MathWorks) in http://blogs.mathworks.com/loren/2008/08/25/piecewise-linear-interpolation/
-# Acknowledgement: Jose M. Mier, https://de.mathworks.com/matlabcentral/fileexchange/43325-quicker-1d-linear-interpolation-interp1qr
-#
-# =========================================================================
+def calc_slope(x,y):
+    """
+    slope of line segments for 1D linear inter- and extrapolation
+    - x:  x-data vector [m], monotonically increasing
+    - y:  y-data matrix [m x n], corresponding to x
+          interpolation is performed for each column
+    """
+    if y.ndim ==1:
+        m  = np.diff(y)/np.diff(x)
+    elif y.ndim ==2:
+        m  = np.diff(y,axis=0)/np.diff(x)[:, np.newaxis]
+    return m
 
-
-# return yi
-
-
-
-
-
-
-
+def interplinfast(x,y,xi,m=None):
+    """
+    fast 1D linear inter- and extrapolation
+    - x:  x-data vector [m], monotonically increasing
+    - y:  y-data matrix [m x n], corresponding to x
+          interpolation is performed for each column
+    - xi: x-value vector [p] to be interpolated, , in any order
+    - m:  slopes of line segments, can be computed in advance (optional)
+    uses the approach given by Loren Shure (The MathWorks) in http://blogs.mathworks.com/loren/2008/08/25/piecewise-linear-interpolation/
+    Acknowledgement: Jose M. Mier, https://de.mathworks.com/matlabcentral/fileexchange/43325-quicker-1d-linear-interpolation-interp1qr
+    """
+    if m.all()==None:
+        m = calc_slope(x,y)     # slope of line segments
+    
+    ind = np.sum( xi > x[:, np.newaxis], axis=0) - 1    # find interval
+    ind = np.maximum(ind, 0)            # avoid index smaller 0
+    ind = np.minimum(ind, len(x)-2)     # avoid index larger than len(x)-2
+    
+    # inter- & extrapolation
+    if y.ndim ==1:
+        yi = m[ind]*(xi-x[ind]) + y[ind]
+    elif y.ndim ==2:
+        yi = m[ind,:]*(xi[:, np.newaxis]-x[ind, np.newaxis]) + y[ind,:]
+    return yi   # interpolated values matrix [p x n], corresponding to xi
 
 #--------------------------------------------------------------------------
 # Variables
@@ -54,26 +64,10 @@ xi = np.linspace(-50,900,Nxi)
 #--------------------------------------------------------------------------
 # Interpolation
 
+# yi = interplinfast(x,y,xi)
 
-# slope of line segments
-if y.ndim ==1:
-    m  = np.diff(y)/np.diff(x)
-elif y.ndim ==2:
-    m  = np.diff(y,axis=0)/np.diff(x)[:, np.newaxis]
-
-# find interval
-A = xi > x[:, np.newaxis]
-ind = np.sum(A, axis=0) - 1
-
-# avoid index smaller 0 or larger than len(x)-2
-ind = np.maximum(ind, 0)
-ind = np.minimum(ind, len(x)-2)
-
-# inter- & extrapolation
-if y.ndim ==1:
-    yi = m[ind]*(xi-x[ind]) + y[ind]
-elif y.ndim ==2:
-    yi = m[ind,:]*(xi[:, np.newaxis]-x[ind, np.newaxis]) + y[ind,:]
+m = calc_slope(x,y)
+yi = interplinfast(x,y,xi,m)
 
 
 
