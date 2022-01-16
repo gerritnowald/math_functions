@@ -18,38 +18,17 @@ Nxi = 3
 
 x = np.linspace(0,800,Nx)
 # y = x**2
-# y = x**3/1e3
-y = np.column_stack(( x**2, x**3/1e3))
+y = x**3/1e3
+# y = np.column_stack(( x**2, x**3/1e3))
 
 xi = np.linspace(-50,900,Nxi)
 
 #--------------------------------------------------------------------------
 # Interpolation
 
-# yi = mf.interplinfast(x,y,xi)
+yi   = mf.interpextraplin(x,y,xi)
 
-m  = mf.calc_slope(x,y)
-yi = mf.interplinfast(x,y,xi,m)
-
-
-
-
-
-
-# Ntest = 1e4
-
-# T = zeros(Ntest,2)
-# for num=1:Ntest
-#     tic
-#     yi = interp1linfast(x,y,xi)
-# #     yi = interp1linfast(x,y,xi,m)
-#     T(num,1)=toc
-    
-#     tic
-#     yi = interp1(x,y,xi,'linear','extrap')
-#     T(num,2)=toc
-
-# mean(T)/min(mean(T))
+yinp = np.interp(xi, x, y)
 
 #--------------------------------------------------------------------------
 # plot
@@ -57,4 +36,6 @@ plt.close('all')
 
 plt.figure()
 plt.plot(x,y,'--+')
-plt.plot(xi,yi,'o')
+plt.plot(xi,yi,'o',label='interpextraplin')
+plt.plot(xi,yinp,'+',label='numpy')
+plt.legend()
