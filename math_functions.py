@@ -45,10 +45,7 @@ def interpextraplin(x,y,xi):
 
 def Vandermonde(x,N):
     # coefficient matrix for polynomial interpolation
-    V = np.ones((len(x),N+1))
-    for i in range(1, N+1):
-        V[:,i] = x**i
-    return V
+    return np.transpose( np.array([x**i for i in range(N+1)]) )
 
 def polyfit(x,y,N):
     """
@@ -64,17 +61,6 @@ def polyfit(x,y,N):
 def polyeval(x,p):
     # evaluate polygon with coefficients p at vector x
     return Vandermonde( x, len(p)-1 ) @ p   # y vector corresponding to x
-
-# -----------------------------------------------------------------------------
-# ODS
-
-def state_space(M,D,C):
-    # M,D,C: mass, damping and stiffness matrix
-    Minv = np.linalg.inv(M)
-    A = np.vstack((
-        np.hstack(( np.zeros(np.shape(M)), np.eye(np.shape(M)[1]) )),
-        np.hstack(( - Minv @ C, - Minv @ D )) ))
-    return A, Minv  # state space matrix, inverse mass matrix (for force vector)
 
 # -----------------------------------------------------------------------------
 # plot
