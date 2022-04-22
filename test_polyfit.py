@@ -23,7 +23,7 @@ N_data = 30     # number of data points
 N = 2           # polynomial order ( N << N_data, N <= N_data - 1 )
 
 
-def main():    
+def main():
     
     # -----------------------------------------------------------------------------
     # test data 
@@ -38,7 +38,7 @@ def main():
     plot_x = np.linspace(-2,2,100)
     
     # my implementation
-    polynomial = polyfit(data_x,data_y,N)
+    polynomial = polyfit(data_x, data_y, N)
     plot_y = polynomial.eval(plot_x)
     
     # numpy

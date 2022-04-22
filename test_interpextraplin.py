@@ -23,19 +23,26 @@ y = x**3/1e3
 
 xi = np.linspace(-50,900,Nxi)
 
-#--------------------------------------------------------------------------
-# Interpolation
 
-yi   = mf.interpextraplin(x,y,xi)
+def main():
 
-yinp = np.interp(xi, x, y)
+    #--------------------------------------------------------------------------
+    # Interpolation
+    
+    yi   = mf.interpextraplin(x,y,xi)
+    
+    yinp = np.interp(xi, x, y)
+    
+    #--------------------------------------------------------------------------
+    # plot
+    plt.close('all')
+    
+    plt.figure()
+    plt.plot(x,y,'--+')
+    plt.plot(xi,yi,'o',label='interpextraplin')
+    plt.plot(xi,yinp,'+',label='numpy')
+    plt.legend()
 
-#--------------------------------------------------------------------------
-# plot
-plt.close('all')
 
-plt.figure()
-plt.plot(x,y,'--+')
-plt.plot(xi,yi,'o',label='interpextraplin')
-plt.plot(xi,yinp,'+',label='numpy')
-plt.legend()
+if __name__ == "__main__":
+    main()
