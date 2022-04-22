@@ -68,7 +68,7 @@ class polyfit:
         self.coeff = np.linalg.inv( B @ V ) @ ( B @ np.array(ydata) )
         
     def __str__(self):
-        return 'polynomial of order ' + str(self.order)
+        return f'polynomial of order {str(self.order)}'
 
     def __Vandermonde(self,x):
         # coefficient matrix for polynomial interpolation
