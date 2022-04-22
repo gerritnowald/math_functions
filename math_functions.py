@@ -43,24 +43,41 @@ def interpextraplin(x,y,xi):
 # -----------------------------------------------------------------------------
 # curve fitting
 
-def Vandermonde(x,N):
-    # coefficient matrix for polynomial interpolation
-    return np.transpose( np.array([x**i for i in range(N+1)]) )
-
-def polyfit(x,y,N):
+class polyfit:
     """
-    polynomial fitting using least squares 
-    x: x-data vector, each value unique
-    y: y-data vector, corresponding to x
-    N: order of fitting polynomial """
-    V = Vandermonde(x,N)    # coefficient matrix
-    B = np.transpose(V)
-    p = np.linalg.inv( B @ V ) @ ( B @ y )
-    return p    # polynomial coeffcients in increasing order
+    polynomial fitting using least squares
+    input:
+        - xdata: list of x-data, each value unique
+        - ydata: list of y-data, corresponding to x
+        - order: order of fitting polynomial (default=2)
+    attributes:
+        - order: order of fitting polynomial
+        - coeff: polynomial coeffcients (increasing order)
+    methods:
+        - eval(x): evaluates polygon at points x (list) 
+    """
+    
+    def __init__(self,xdata,ydata,order=2):
+        # calculation of polynomial coefficients (only once)
+        # order of polynomial
+        self.order = order
+        # coefficient matrix
+        V = self.__Vandermonde(xdata)
+        B = np.transpose(V)
+        # polynomial coeffcients (increasing order)
+        self.coeff = np.linalg.inv( B @ V ) @ ( B @ np.array(ydata) )
+        
+    def __str__(self):
+        return 'polynomial of order ' + str(self.order)
 
-def polyeval(x,p):
-    # evaluate polygon with coefficients p at vector x
-    return Vandermonde( x, len(p)-1 ) @ p   # y vector corresponding to x
+    def __Vandermonde(self,xdata):
+        # coefficient matrix for polynomial interpolation
+        return np.transpose( 
+            np.array([np.array(xdata)**i for i in range(self.order+1)]) )
+    
+    def eval(self,x):
+        # evaluate polygon at vector x
+        return self.__Vandermonde(x) @ self.coeff
 
 # -----------------------------------------------------------------------------
 # plot
