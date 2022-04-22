@@ -54,7 +54,7 @@ class polyfit:
         - order: order of fitting polynomial
         - coeff: polynomial coeffcients (increasing order)
     methods:
-        - eval(x): evaluates polygon at points x (list) 
+        - eval(x): evaluates polynomial at points x (list) 
     """
     
     def __init__(self,xdata,ydata,order=2):
@@ -70,10 +70,10 @@ class polyfit:
     def __str__(self):
         return 'polynomial of order ' + str(self.order)
 
-    def __Vandermonde(self,xdata):
+    def __Vandermonde(self,x):
         # coefficient matrix for polynomial interpolation
         return np.transpose( 
-            np.array([np.array(xdata)**i for i in range(self.order+1)]) )
+            np.array([np.array(x)**n for n in range(self.order+1)]) )
     
     def eval(self,x):
         # evaluate polygon at vector x
