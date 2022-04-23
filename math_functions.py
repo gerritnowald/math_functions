@@ -43,7 +43,7 @@ def interpextraplin(x,y,xi):
 # -----------------------------------------------------------------------------
 # curve fitting
 
-class polyfit:
+class polynomial:
     """
     polynomial fitting using least squares
     input:
@@ -52,9 +52,9 @@ class polyfit:
         - order: order of fitting polynomial (default=2)
     attributes:
         - order: order of fitting polynomial
-        - coeff: polynomial coeffcients (increasing order)
+        - coeff: polynomial coeffcients (decreasing order)
     methods:
-        - eval(x): evaluates polynomial at points x (list) 
+        - instance(x): evaluates polynomial at points x (list) 
     """
     
     def __init__(self,xdata,ydata,order=2):
@@ -66,18 +66,28 @@ class polyfit:
         # coefficient matrix
         V = self.__Vandermonde(xdata)
         B = np.transpose(V)
-        # polynomial coeffcients (increasing order)
+        # polynomial coeffcients (decreasing order)
         self.coeff = np.linalg.inv( B @ V ) @ ( B @ ydata )
         
     def __str__(self):
-        return f'polynomial of order {str(self.order)}'
+        # polynomial as string
+        def fcoeff(i):
+            # plus sign & rounding
+            return f' {"{0:+.03f}".format(self.coeff[i])}'
+        polstr = ''
+        for i in range(self.order-1):
+            polstr += fcoeff(i) + f'*x**{self.order-i}'
+        if self.order > 0:
+            polstr += fcoeff(-2) + '*x'
+        polstr += fcoeff(-1)
+        return 'polynomial: ' + polstr
 
     def __Vandermonde(self,x):
         # coefficient matrix for polynomial interpolation
-        V = [ x**n for n in range(self.order+1) ]
+        V = [ x**(self.order-n) for n in range(self.order+1) ]
         return np.transpose(np.array(V))
     
-    def evaluate(self,x):
+    def __call__(self,x):
         x = np.array(x)
         # evaluate polygon at vector x
         y = self.__Vandermonde(x) @ self.coeff

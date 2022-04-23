@@ -13,7 +13,7 @@ Created on Thu Jan 13 10:57:37 2022
 import numpy as np
 import matplotlib.pyplot as plt
 
-from math_functions import polyfit
+from math_functions import polynomial
 
 # -----------------------------------------------------------------------------
 # input
@@ -38,16 +38,17 @@ def main():
     plot_x = np.linspace(-2,2,100)
     
     # my implementation
-    polynomial = polyfit(data_x, data_y, N)
-    plot_y = polynomial.evaluate(plot_x)
+    p1 = polynomial(data_x, data_y, N)
+    print(p1)
+    plot_y = p1(plot_x)
     
     # numpy
-    pnp = np.polyfit(data_x, data_y, N)
-    plot_ynp = np.polyval(pnp, plot_x)
+    coeff_np  = np.polyfit(data_x, data_y, N)
+    plot_y_np = np.polyval(coeff_np, plot_x)
     
     # comparison
-    print(f'max. difference coefficients {max(abs(polynomial.coeff-pnp[::-1]))}')
-    print(f'max. difference evaluated polynom {max(abs(plot_y-plot_ynp))}')
+    print(f'max. difference coefficients {max(abs(p1.coeff-coeff_np))}')
+    print(f'max. difference evaluated polynom {max(abs(plot_y-plot_y_np))}')
     
     # -----------------------------------------------------------------------------
     # plot
@@ -55,7 +56,7 @@ def main():
     plt.close('all')
     
     plt.figure()
-    # plt.style.use('dark_background')
+    plt.style.use('dark_background')
     plt.plot(data_x, data_y, '.', label='data')
     plt.plot(plot_x, plot_y, label='fitted polynomial', color='gold')
     plt.title('data and fitted polynomial')
