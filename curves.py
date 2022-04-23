@@ -6,16 +6,15 @@ Created on Thu Jan 13 10:21:30 2022
 """
 
 import numpy as np
-import matplotlib.pyplot as plt
 import warnings
 
 # -----------------------------------------------------------------------------
 # polynomial fitting
 
-class polynomial:
+class polyfit:
     """
     polynomial fitting using least squares
-    initialise: instance = polynomial(xdata,ydata,order=2)
+    initialise: instance = polyfit(xdata,ydata,order=2)
         - xdata: list of x-data, each value unique
         - ydata: list of y-data, corresponding to x
         - order: order of fitting polynomial (default=2)
@@ -98,20 +97,3 @@ def interpextraplin(x,y,xi):
     elif y.ndim ==2:
         yi = m[ind,:]*(xi[:, np.newaxis]-x[ind, np.newaxis]) + y[ind,:]
     return yi   # interpolated values matrix [p x n], corresponding to xi
-
-# -----------------------------------------------------------------------------
-# cos and sin of the location vector of a given point
-
-def cos_sin(q):                       # q = np.array([x,y])
-    return q/np.sqrt(np.sum(q**2))    # [cos, sin]
-
-# -----------------------------------------------------------------------------
-# plot of circle
-
-def plot_circ( R=1, C=(0,0), color='k', points=50 ):
-    # plots a circle with radius R and center C
-    angle = np.linspace(0, 2*np.pi, points)
-    x = C[0] + R*np.cos(angle)
-    y = C[1] + R*np.sin(angle)
-    plt.plot(x,y, color=color )
-    plt.axis('equal')

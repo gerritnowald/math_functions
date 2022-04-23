@@ -8,7 +8,7 @@ Created on Sat Jan 15 10:20:05 2022
 import numpy as np
 import matplotlib.pyplot as plt
 
-import math_functions as mf
+from curves import interpextraplin
 
 #--------------------------------------------------------------------------
 # Variables
@@ -29,9 +29,9 @@ def main():
     #--------------------------------------------------------------------------
     # Interpolation
     
-    yi   = mf.interpextraplin(x,y,xi)
+    yi   = interpextraplin(x,y,xi)
     
-    yinp = np.interp(xi, x, y)
+    yi_np = np.interp(xi, x, y)
     
     #--------------------------------------------------------------------------
     # plot
@@ -40,7 +40,7 @@ def main():
     plt.figure()
     plt.plot(x,y,'--+')
     plt.plot(xi,yi,'o',label='interpextraplin')
-    plt.plot(xi,yinp,'+',label='numpy')
+    plt.plot(xi,yi_np,'+',label='numpy')
     plt.legend()
 
 

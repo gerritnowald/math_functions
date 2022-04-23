@@ -13,7 +13,7 @@ Created on Thu Jan 13 10:57:37 2022
 import numpy as np
 import matplotlib.pyplot as plt
 
-from math_functions import polynomial
+from curves import polyfit
 
 # -----------------------------------------------------------------------------
 # input
@@ -35,22 +35,20 @@ def main():
     # -----------------------------------------------------------------------------
     # calculation
     
-    plot_x = np.linspace(-2,2,100)
-    
     # my implementation
-    p1 = polynomial(data_x, data_y, N)
-    plot_y = p1(plot_x)
+    p1 = polyfit(data_x, data_y, N)   
     
     # numpy
     coeff_np  = np.polyfit(data_x, data_y, N)
-    plot_y_np = np.polyval(coeff_np, plot_x)
     
     # comparison
-    print(f'max. difference coefficients {max(abs(p1.coeff-coeff_np))}')
-    print(f'max. difference evaluated polynom {max(abs(plot_y-plot_y_np))}')
+    print(f'max. difference coefficients: {max(abs(p1.coeff-coeff_np))}')
     
     # -----------------------------------------------------------------------------
     # plot
+    
+    plot_x = np.linspace(-2,2,100)
+    plot_y = p1(plot_x)
     
     plt.close('all')
     
@@ -58,7 +56,8 @@ def main():
     plt.style.use('dark_background')
     plt.plot(data_x, data_y, '.', label='data')
     plt.plot(plot_x, plot_y, label='fitted polynomial', color='gold')
-    plt.title('data and fitted polynomial')
+    plt.legend()
+    plt.title('polynomial fit with least squares')
     plt.xlabel('x')
     plt.ylabel('y')
     plt.tight_layout()
