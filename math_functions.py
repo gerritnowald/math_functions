@@ -59,25 +59,29 @@ class polyfit:
     
     def __init__(self,xdata,ydata,order=2):
         # calculation of polynomial coefficients (only once)
+        xdata = np.array(xdata)
+        ydata = np.array(ydata)
         # order of polynomial
         self.order = order
         # coefficient matrix
         V = self.__Vandermonde(xdata)
         B = np.transpose(V)
         # polynomial coeffcients (increasing order)
-        self.coeff = np.linalg.inv( B @ V ) @ ( B @ np.array(ydata) )
+        self.coeff = np.linalg.inv( B @ V ) @ ( B @ ydata )
         
     def __str__(self):
         return f'polynomial of order {str(self.order)}'
 
     def __Vandermonde(self,x):
         # coefficient matrix for polynomial interpolation
-        return np.transpose( 
-            np.array([np.array(x)**n for n in range(self.order+1)]) )
+        V = [ x**n for n in range(self.order+1) ]
+        return np.transpose(np.array(V))
     
-    def eval(self,x):
+    def evaluate(self,x):
+        x = np.array(x)
         # evaluate polygon at vector x
-        return self.__Vandermonde(x) @ self.coeff
+        y = self.__Vandermonde(x) @ self.coeff
+        return y
 
 # -----------------------------------------------------------------------------
 # plot

@@ -39,7 +39,7 @@ def main():
     
     # my implementation
     polynomial = polyfit(data_x, data_y, N)
-    plot_y = polynomial.eval(plot_x)
+    plot_y = polynomial.evaluate(plot_x)
     
     # numpy
     pnp = np.polyfit(data_x, data_y, N)
@@ -55,9 +55,16 @@ def main():
     plt.close('all')
     
     plt.figure()
+    # plt.style.use('dark_background')
     plt.plot(data_x, data_y, '.', label='data')
-    plt.plot(plot_x, plot_y, 'k', label='fitted polynomial')
+    plt.plot(plot_x, plot_y, label='fitted polynomial', color='gold')
+    plt.title('data and fitted polynomial')
+    plt.xlabel('x')
+    plt.ylabel('y')
+    plt.tight_layout()
+    
     plt.show()
+    # plt.savefig('fitted polynomial.png', transparent=True)
 
 
 if __name__ == "__main__":
