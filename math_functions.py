@@ -9,7 +9,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 # -----------------------------------------------------------------------------
-# trigonometry
+# cos and sin of the location vector of a given point
 
 def cos_sin(q):                       # q = np.array([x,y])
     return q/np.sqrt(np.sum(q**2))    # [cos, sin]
@@ -41,34 +41,33 @@ def interpextraplin(x,y,xi):
     return yi   # interpolated values matrix [p x n], corresponding to xi
 
 # -----------------------------------------------------------------------------
-# curve fitting
+# polynomial fitting
 
 class polynomial:
     """
     polynomial fitting using least squares
-    input:
+    initialise: instance = polynomial(xdata,ydata,order=2)
         - xdata: list of x-data, each value unique
         - ydata: list of y-data, corresponding to x
         - order: order of fitting polynomial (default=2)
     attributes:
-        - order: order of fitting polynomial
-        - coeff: polynomial coeffcients (decreasing order)
+        - instance.order: order of fitting polynomial
+        - instance.coeff: polynomial coeffcients (decreasing order)
     methods:
         - instance(x): evaluates polynomial at points x (list) 
     """
     
     def __init__(self,xdata,ydata,order=2):
-        # calculation of polynomial coefficients (only once)
         xdata = np.array(xdata)
         ydata = np.array(ydata)
-        # order of polynomial
         self.order = order
+        # calculation of polynomial coefficients (only once)
         # coefficient matrix
         V = self.__Vandermonde(xdata)
         B = np.transpose(V)
         # polynomial coeffcients (decreasing order)
-        self.coeff = np.linalg.inv( B @ V ) @ ( B @ ydata )
-        
+        self.coeff = np.linalg.inv( B @ V ) @ ( B @ ydata )        
+    
     def __str__(self):
         # polynomial as string
         def fcoeff(i):
@@ -94,7 +93,7 @@ class polynomial:
         return y
 
 # -----------------------------------------------------------------------------
-# plot
+# plot of circle
 
 def plot_circ( R=1, C=(0,0), color='k', points=50 ):
     # plots a circle with radius R and center C

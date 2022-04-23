@@ -39,6 +39,7 @@ def main():
     
     # my implementation
     p1 = polynomial(data_x, data_y, N)
+    # p1 = polynomial(data_x, data_y)
     print(p1)
     plot_y = p1(plot_x)
     
