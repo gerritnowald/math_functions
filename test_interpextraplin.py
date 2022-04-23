@@ -8,7 +8,7 @@ Created on Sat Jan 15 10:20:05 2022
 import numpy as np
 import matplotlib.pyplot as plt
 
-from curves import interpextraplin
+from math_functions import interpextraplin
 
 #--------------------------------------------------------------------------
 # Variables

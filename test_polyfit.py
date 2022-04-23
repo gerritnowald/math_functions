@@ -3,7 +3,7 @@
 test for my oop implementation of a polynomial fit using least squares.
 data is genarated as a cosine + noise.
 the fitted polynomial with the data are plotted.
-polynomial coefficients and evalauted values are compared with NumPy.
+polynomial coefficients are compared with NumPy.
 
 Created on Thu Jan 13 10:57:37 2022
 
@@ -13,7 +13,7 @@ Created on Thu Jan 13 10:57:37 2022
 import numpy as np
 import matplotlib.pyplot as plt
 
-from curves import polyfit
+from math_functions import polyfit
 
 # -----------------------------------------------------------------------------
 # input
