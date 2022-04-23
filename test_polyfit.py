@@ -20,7 +20,7 @@ from math_functions import polynomial
 
 N_data = 30     # number of data points
     
-N = 2           # polynomial order ( N << N_data, N <= N_data - 1 )
+N = 2           # polynomial order ( N << N_data )
 
 
 def main():

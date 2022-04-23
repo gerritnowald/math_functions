@@ -7,6 +7,7 @@ Created on Thu Jan 13 10:21:30 2022
 
 import numpy as np
 import matplotlib.pyplot as plt
+import warnings
 
 # -----------------------------------------------------------------------------
 # polynomial fitting
@@ -26,9 +27,18 @@ class polynomial:
     """
     
     def __init__(self,xdata,ydata,order=2):
+        # input checking
+        if len(xdata) != len(ydata):
+            raise ValueError('data must have same length')
         xdata = np.array(xdata)
         ydata = np.array(ydata)
+        
+        N_data = len(xdata)
+        if order > N_data - 1:
+            order = N_data - 1
+            warnings.warn(f'polynomial order set to {order}, only {N_data} data points', stacklevel=2)
         self.order = order
+        
         # create polynomial from least squares fit
         self.coeff = self.__calc_coeff(xdata,ydata)
         # print polynomial formula
