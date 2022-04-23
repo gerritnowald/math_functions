@@ -9,10 +9,59 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 # -----------------------------------------------------------------------------
-# cos and sin of the location vector of a given point
+# polynomial fitting
 
-def cos_sin(q):                       # q = np.array([x,y])
-    return q/np.sqrt(np.sum(q**2))    # [cos, sin]
+class polynomial:
+    """
+    polynomial fitting using least squares
+    initialise: instance = polynomial(xdata,ydata,order=2)
+        - xdata: list of x-data, each value unique
+        - ydata: list of y-data, corresponding to x
+        - order: order of fitting polynomial (default=2)
+    attributes:
+        - instance.order: order of fitting polynomial
+        - instance.coeff: polynomial coeffcients (decreasing order)
+    methods:
+        - instance(x): evaluates polynomial at points x (list) 
+    """
+    
+    def __init__(self,xdata,ydata,order=2):
+        xdata = np.array(xdata)
+        ydata = np.array(ydata)
+        self.order = order
+        # create polynomial from least squares fit
+        self.coeff = self.__calc_coeff(xdata,ydata)
+        # print polynomial formula
+        print(self)
+    
+    def __call__(self,x):
+        # evaluate polynomial at vector x
+        x = np.array(x)
+        y = self.__Vandermonde(x) @ self.coeff
+        return y
+    
+    def __str__(self):
+        # polynomial as string
+        def fcoeff(i):
+            return f' {"{0:+.3g}".format(self.coeff[i])}' # plus sign & rounding
+        polstr = ''
+        for i in range(self.order-1):
+            polstr += fcoeff(i) + f'*x**{self.order-i}'
+        if self.order > 0:
+            polstr += fcoeff(-2) + '*x'
+        polstr += fcoeff(-1)
+        return 'polynomial: f(x) =' + polstr
+
+    def __calc_coeff(self,x,y):
+        # calculation of polynomial coefficients (decreasing order)
+        V = self.__Vandermonde(x)
+        B = np.transpose(V)
+        return np.linalg.inv( B @ V ) @ ( B @ y )  
+    
+    def __Vandermonde(self,x):
+        # coefficient matrix for polynomial interpolation
+        V = [ x**(self.order-n) for n in range(self.order+1) ]
+        return np.transpose(np.array(V))
 
 # -----------------------------------------------------------------------------
 # linear 1D interpolation
@@ -41,56 +90,10 @@ def interpextraplin(x,y,xi):
     return yi   # interpolated values matrix [p x n], corresponding to xi
 
 # -----------------------------------------------------------------------------
-# polynomial fitting
+# cos and sin of the location vector of a given point
 
-class polynomial:
-    """
-    polynomial fitting using least squares
-    initialise: instance = polynomial(xdata,ydata,order=2)
-        - xdata: list of x-data, each value unique
-        - ydata: list of y-data, corresponding to x
-        - order: order of fitting polynomial (default=2)
-    attributes:
-        - instance.order: order of fitting polynomial
-        - instance.coeff: polynomial coeffcients (decreasing order)
-    methods:
-        - instance(x): evaluates polynomial at points x (list) 
-    """
-    
-    def __init__(self,xdata,ydata,order=2):
-        xdata = np.array(xdata)
-        ydata = np.array(ydata)
-        self.order = order
-        # calculation of polynomial coefficients (only once)
-        # coefficient matrix
-        V = self.__Vandermonde(xdata)
-        B = np.transpose(V)
-        # polynomial coeffcients (decreasing order)
-        self.coeff = np.linalg.inv( B @ V ) @ ( B @ ydata )        
-    
-    def __str__(self):
-        # polynomial as string
-        def fcoeff(i):
-            # plus sign & rounding
-            return f' {"{0:+.03f}".format(self.coeff[i])}'
-        polstr = ''
-        for i in range(self.order-1):
-            polstr += fcoeff(i) + f'*x**{self.order-i}'
-        if self.order > 0:
-            polstr += fcoeff(-2) + '*x'
-        polstr += fcoeff(-1)
-        return 'polynomial: ' + polstr
-
-    def __Vandermonde(self,x):
-        # coefficient matrix for polynomial interpolation
-        V = [ x**(self.order-n) for n in range(self.order+1) ]
-        return np.transpose(np.array(V))
-    
-    def __call__(self,x):
-        x = np.array(x)
-        # evaluate polygon at vector x
-        y = self.__Vandermonde(x) @ self.coeff
-        return y
+def cos_sin(q):                       # q = np.array([x,y])
+    return q/np.sqrt(np.sum(q**2))    # [cos, sin]
 
 # -----------------------------------------------------------------------------
 # plot of circle
