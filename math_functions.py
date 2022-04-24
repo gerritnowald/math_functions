@@ -6,7 +6,6 @@ Created on Thu Jan 13 10:21:30 2022
 """
 
 import numpy as np
-import warnings
 
 # -----------------------------------------------------------------------------
 # polynomial fitting
