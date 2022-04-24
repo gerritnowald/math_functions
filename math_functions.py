@@ -23,14 +23,15 @@ def Vandermonde(x,order):
     return np.transpose(np.array(V))
 
 def polyfit(x,y,order):
-    # calculation of polynomial coefficients (increasing order)
+    # calculation of polynomial coefficients (decreasing order)
     V = Vandermonde(x,order)
     B = np.transpose(V)
     return np.linalg.inv( B @ V ) @ ( B @ y )
 
 def polyeval(x,coeff):
     # evaluate polynomial at vector x
-    return Vandermonde( x, len(coeff)-1 ) @ coeff   # y vector corresponding to x
+    y = Vandermonde( x, len(coeff)-1 ) @ coeff
+    return y
 
 # -----------------------------------------------------------------------------
 # linear 1D interpolation
