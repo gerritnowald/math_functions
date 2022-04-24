@@ -6,13 +6,28 @@ Created on Thu Jan 13 10:21:30 2022
 """
 
 import numpy as np
-import matplotlib.pyplot as plt
 
 # -----------------------------------------------------------------------------
-# trigonometry
+# polynomial fitting
 
-def cos_sin(q):                       # q = np.array([x,y])
-    return q/np.sqrt(np.sum(q**2))    # [cos, sin]
+def Vandermonde(x,N):
+    # coefficient matrix for polynomial interpolation
+    return np.transpose( np.array([x**i for i in range(N+1)]) )
+
+def polyfit(x,y,N):
+    """
+    polynomial fitting using least squares 
+    x: x-data vector, each value unique
+    y: y-data vector, corresponding to x
+    N: order of fitting polynomial """
+    V = Vandermonde(x,N)    # coefficient matrix
+    B = np.transpose(V)
+    p = np.linalg.inv( B @ V ) @ ( B @ y )
+    return p    # polynomial coeffcients in increasing order
+
+def polyeval(x,p):
+    # evaluate polygon with coefficients p at vector x
+    return Vandermonde( x, len(p)-1 ) @ p   # y vector corresponding to x
 
 # -----------------------------------------------------------------------------
 # linear 1D interpolation
@@ -39,36 +54,3 @@ def interpextraplin(x,y,xi):
     elif y.ndim ==2:
         yi = m[ind,:]*(xi[:, np.newaxis]-x[ind, np.newaxis]) + y[ind,:]
     return yi   # interpolated values matrix [p x n], corresponding to xi
-
-# -----------------------------------------------------------------------------
-# curve fitting
-
-def Vandermonde(x,N):
-    # coefficient matrix for polynomial interpolation
-    return np.transpose( np.array([x**i for i in range(N+1)]) )
-
-def polyfit(x,y,N):
-    """
-    polynomial fitting using least squares 
-    x: x-data vector, each value unique
-    y: y-data vector, corresponding to x
-    N: order of fitting polynomial """
-    V = Vandermonde(x,N)    # coefficient matrix
-    B = np.transpose(V)
-    p = np.linalg.inv( B @ V ) @ ( B @ y )
-    return p    # polynomial coeffcients in increasing order
-
-def polyeval(x,p):
-    # evaluate polygon with coefficients p at vector x
-    return Vandermonde( x, len(p)-1 ) @ p   # y vector corresponding to x
-
-# -----------------------------------------------------------------------------
-# plot
-
-def plot_circ( R=1, C=(0,0), color='k', points=50 ):
-    # plots a circle with radius R and center C
-    angle = np.linspace(0, 2*np.pi, points)
-    x = C[0] + R*np.cos(angle)
-    y = C[1] + R*np.sin(angle)
-    plt.plot(x,y, color=color )
-    plt.axis('equal')

@@ -27,21 +27,19 @@ data_y += 0.2*(np.random.rand(np.shape(data_x)[0])-0.5)   # adding noise
 # -----------------------------------------------------------------------------
 # calculation
 
-p = mf.polyfit(data_x, data_y, N)   # polynomial coeffcients in increasing order
+coeff = mf.polyfit(data_x, data_y, N)   # polynomial coeffcients in increasing order
 
-pnp = np.polyfit(data_x, data_y, N)
-print(f'max. difference coefficients {max(abs(p-pnp[::-1]))}')
+coeff_np = np.polyfit(data_x, data_y, N)
+
+print(f'max. difference coefficients {max(abs(coeff-coeff_np[::-1]))}')
 
 # -----------------------------------------------------------------------------
 # plot
 
-plt.close('all')
-
 plot_x = np.linspace(-2,2,100)
-plot_y = mf.polyeval(plot_x, p)
+plot_y = mf.polyeval(plot_x, coeff)
 
-plot_ynp = np.polyval(pnp, plot_x)
-print(f'max. difference evaluated polynom {max(abs(plot_y-plot_ynp))}')
+plt.close('all')
 
 plt.figure()
 plt.plot(data_x, data_y, '.', label='data')
