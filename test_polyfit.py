@@ -31,7 +31,7 @@ coeff = mf.polyfit(data_x, data_y, N)   # polynomial coeffcients in increasing o
 
 coeff_np = np.polyfit(data_x, data_y, N)
 
-print(f'max. difference coefficients {max(abs(coeff-coeff_np[::-1]))}')
+print(f'max. difference coefficients {max(abs(coeff-coeff_np))}')
 
 # -----------------------------------------------------------------------------
 # plot

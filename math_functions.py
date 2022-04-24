@@ -19,7 +19,7 @@ order: order of fitting polynomial
 
 def Vandermonde(x,order):
     # coefficient matrix for polynomial interpolation
-    V = [x**n for n in range(order+1)]
+    V = [x**(order-n) for n in range(order+1)]
     return np.transpose(np.array(V))
 
 def polyfit(x,y,order):
