@@ -10,24 +10,27 @@ import numpy as np
 # -----------------------------------------------------------------------------
 # polynomial fitting
 
-def Vandermonde(x,N):
+"""
+polynomial fitting using least squares 
+x: x-data vector, each value unique
+y: y-data vector, corresponding to x
+order: order of fitting polynomial
+"""
+
+def Vandermonde(x,order):
     # coefficient matrix for polynomial interpolation
-    return np.transpose( np.array([x**i for i in range(N+1)]) )
+    V = [x**n for n in range(order+1)]
+    return np.transpose(np.array(V))
 
-def polyfit(x,y,N):
-    """
-    polynomial fitting using least squares 
-    x: x-data vector, each value unique
-    y: y-data vector, corresponding to x
-    N: order of fitting polynomial """
-    V = Vandermonde(x,N)    # coefficient matrix
+def polyfit(x,y,order):
+    # calculation of polynomial coefficients (increasing order)
+    V = Vandermonde(x,order)
     B = np.transpose(V)
-    p = np.linalg.inv( B @ V ) @ ( B @ y )
-    return p    # polynomial coeffcients in increasing order
+    return np.linalg.inv( B @ V ) @ ( B @ y )
 
-def polyeval(x,p):
-    # evaluate polygon with coefficients p at vector x
-    return Vandermonde( x, len(p)-1 ) @ p   # y vector corresponding to x
+def polyeval(x,coeff):
+    # evaluate polynomial at vector x
+    return Vandermonde( x, len(coeff)-1 ) @ coeff   # y vector corresponding to x
 
 # -----------------------------------------------------------------------------
 # linear 1D interpolation
