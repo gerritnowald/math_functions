@@ -1,11 +1,26 @@
-vert = [0 0;
-		3 0;
-		3 2;
-		0 2;
-		0 0]
+using Plots
 
-point = [-1 1]
+# ----------------------------------------------------------------------
+# inputs
 
+Vertices = [
+    0 0;
+    1.75 4;
+    1.5 6;
+    1 7;
+    0.25 6;
+    0 5;
+    -0.25 6;
+    -1 7;
+    -1.5 6;
+    -1.75 4;
+    0 0
+    ]
+
+N = 10000
+
+# ----------------------------------------------------------------------
+# functions
 
 function isPointInside(vert,point)
 	# A point is in a polygon, if a line from the point to infinity crosses the polygon an odd number of times.
@@ -28,5 +43,23 @@ function isPointInside(vert,point)
 	return odd  # point is in polygon (not on the edge) if odd=true
 end
 
+# ----------------------------------------------------------------------
+# plot
 
-isPointInside(vert,point)
+points = [rand(N,1).*6 .- 3   rand(N,1).*10 .- 2]
+
+p = plot()
+
+start = time()
+for i=1:size(points)[1]
+    point = points[i,:]
+    if isPointInside(Vertices,point)
+        style = "yellow"
+    else
+        style = "blue"
+    end
+    scatter!(p, [point[1]],[point[2]], label="", color = style)
+end
+println(time() - start)
+
+display(p)
