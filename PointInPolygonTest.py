@@ -39,7 +39,7 @@ for point in points:
         style = "yo"
     else:
         style = "bo"
-    plt.plot(point[0], point[1], style)
+    plt.plot(*point, style)
 print(f"elapsed time: {time.time() - start_time} s")
 
 ax.set_axis_off()
