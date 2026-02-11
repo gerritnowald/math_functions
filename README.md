@@ -1,4 +1,6 @@
-# math_functions
+# math functions
+
+repo for small math projects.
 
 ![](https://raw.githubusercontent.com/gerritnowald/math_functions/main/fitted-polynomial.png)
 
