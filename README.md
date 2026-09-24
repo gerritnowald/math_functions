@@ -5,6 +5,7 @@ repo for small math projects.
 ![](https://raw.githubusercontent.com/gerritnowald/math_functions/main/fitted-polynomial.png)
 
 files in `\src\`:  
+- `Bezier`: construction of Bezier curves
 - `examples` & `math_functions`: oop polynomial fitting using least squares & 1D linear inter- and extrapolation, see also this blog post:  
 https://gerritnowald.wordpress.com/2022/04/24/object-oriented-vs-functional-programming-for-polynomial-fitting/
 - `linear_regression_fit`: analytical calculation of linear fit using derivatives of cost function
