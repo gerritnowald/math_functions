@@ -6,6 +6,8 @@ repo for small math projects.
 
 files in `\src\`:  
 - `Bezier`: construction of Bezier curves
+- `exp_growth`: Simulation of the exponential population growth of the Brown Rat, see also this blog post:    
+https://gerritnowald.wordpress.com/2025/06/24/recursive-rats/
 - `linear_interpolation`: efficient 1D linear inter- and extrapolation
 - `linear_regression_fit`: analytical calculation of linear fit using derivatives of cost function
 - `mixing_temperature`: calculate volumes to get desired mixing temperature, see also this blog post:    
